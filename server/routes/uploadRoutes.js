@@ -1,9 +1,21 @@
-import { Router } from 'express';
-import { protect, adminOnly } from '../middleware/auth.js';
-import { upload, handleUpload, getBatch } from '../controllers/uploadController.js';
+// routes/uploadRoutes.js
+const express = require("express");
+const multer = require("multer");
 
-const router = Router();
-router.post('/', protect, adminOnly, upload.single('file'), handleUpload);
-router.get('/:batchId', protect, adminOnly, getBatch);
+const router = express.Router();
 
-export default router;
+// Simple file upload config
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "uploads/"),
+  filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname),
+});
+
+const upload = multer({ storage });
+
+// Route
+router.post("/", upload.single("file"), (req, res) => {
+  if (!req.file) return res.status(400).json({ message: "No file uploaded" });
+  res.json({ filename: req.file.filename, path: `/uploads/${req.file.filename}` });
+});
+
+module.exports = router;

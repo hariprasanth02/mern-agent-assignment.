@@ -1,8 +1,17 @@
- import { Router } from 'express';
- import { createAgent, listAgents } from '../controllers/agentController.js';
- import { protect, adminOnly } from '../middleware/auth.js';
- const router = Router();
- router.use(protect, adminOnly);
- router.post('/', createAgent);
- router.get('/', listAgents);
- export default router;
+// routes/agentRoutes.js
+const express = require("express");
+const {
+  createAgent,
+  getAgents,
+  updateAgent,
+  deleteAgent,
+} = require("../controllers/agentController.js");
+
+const router = express.Router();
+
+router.post("/", createAgent);
+router.get("/", getAgents);
+router.put("/:id", updateAgent);
+router.delete("/:id", deleteAgent);
+
+module.exports = router;
