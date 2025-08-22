@@ -59,14 +59,14 @@ const start = async () => {
     if (adminEmail) {
       const existing = await User.findOne({ email: adminEmail });
       if (!existing) {
-        await User.create({
-          name: "Admin User", // ✅ required field
-          email: adminEmail,
-          password: adminPassword,
-          role: "admin", // optional: only if your schema supports roles
-        });
-        console.log(`✅ Seeded default admin: ${adminEmail}`);
-      }
+  await User.create({
+    name: "Admin",              // ← add this
+    email: adminEmail,
+    password: adminPassword,
+  });
+  console.log(`✅ Seeded default admin: ${adminEmail}`);
+}
+
     }
 
     const port = Number(process.env.PORT) || 5000;
